@@ -1,6 +1,8 @@
 import { Application } from './deps.ts';
 import router from './routes.ts';
 
+import './database/index.ts';
+
 
 const env = Deno.env.toObject()
 const PORT = env.PORT || 3000;
