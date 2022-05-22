@@ -24,7 +24,18 @@ class Equipo extends Model {
         model: Estadio,
       }
     },
+    fundacion: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    }
   };
+
+  id_equipo!: number;
+  nombre!: string;
+  lugar!: string;
+  entrenador!: string;
+  id_estadio!: number;
+  fundacion!: number;
 }
 
 export default Equipo;

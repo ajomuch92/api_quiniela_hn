@@ -13,6 +13,11 @@ class Estadio extends Model {
       allowNull: true,
     },
   };
+
+  id_estadio!: number;
+  nombre!: string;
+  lugar!: string;
+  capacidad!: number;
 }
 
 export default Estadio;
