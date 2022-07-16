@@ -1,5 +1,5 @@
-import { Model, DataTypes } from '../deps.ts';
-import Estadio from "./estadio.ts";
+import { Model, DataTypes  } from '../deps.ts';
+import Estadio from './estadio.ts';
 
 class Equipo extends Model {
   static table = 'equipos';
@@ -19,10 +19,6 @@ class Equipo extends Model {
     id_estadio: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      relationship: {
-        kind: 'multiple' as const,
-        model: Estadio,
-      }
     },
     fundacion: {
       type: DataTypes.INTEGER,
@@ -36,6 +32,12 @@ class Equipo extends Model {
   entrenador!: string;
   id_estadio!: number;
   fundacion!: number;
+  // deno-lint-ignore no-explicit-any
+  estadio!: any;
+
+  static estadio(): Promise<Model> {
+    return this.hasOne(Estadio);
+  }
 }
 
 export default Equipo;
