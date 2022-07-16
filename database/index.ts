@@ -2,7 +2,7 @@ import { config, Database, MySQLConnector } from '../deps.ts';
 import Equipo from '../models/equipo.ts';
 import Estadio from '../models/estadio.ts';
 
-const { DATABASE_HOST, DATABASE_USER, DATABASE_PASS, DATABASE_NAME, DATABASE_PORT } = config();
+const { DATABASE_HOST, DATABASE_USER, DATABASE_PASS, DATABASE_NAME, DATABASE_PORT } = await config();
 
 
 const connection = new MySQLConnector({
@@ -15,7 +15,7 @@ const connection = new MySQLConnector({
 
 const db = new Database(connection);
 
-await db.link([Estadio, Equipo]);
+db.link([Estadio, Equipo]);
 
 // await db.sync();
 
