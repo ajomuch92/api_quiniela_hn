@@ -3,9 +3,15 @@ import Equipo from '../models/equipo.ts';
 
 export default class EquiposController {
 
-  static async list(context: RouterContext<'/api/v1/equipos', Record<string | number, string | undefined>, Record<string, void>>): Promise<void> {
+  static async list(context: RouterContext<'/api/v1/equipos'>): Promise<void> {
     try {
       const list: Equipo[] = await Equipo.all() as Equipo[];
+      for(let i = 0; i < list.length; i +=1) {
+        const equipo: Equipo = list[i];
+        console.log(equipo.id_equipo);
+        const estadio = await Equipo.where('id_equipo', equipo.id_equipo).get();
+        equipo.estadio = estadio;
+      }
       context.response.body = list;
     } catch (error) {
       context.response.status = 500;
@@ -16,11 +22,11 @@ export default class EquiposController {
     }
   }
   
-  static async get(context: RouterContext<'/api/v1/equipos/:id', {id: string}, Record<string, void>>): Promise<void> {
+  static async get(context: RouterContext<'/api/v1/equipos/:id'>): Promise<void> {
     try {
       const { id } = context.params;
-      const equipo = await Equipo.where('id_equipo', parseInt(id)).get();
-      if (!equipo) {
+      const equipo: Equipo | Equipo[] = await Equipo.where('id_equipo', parseInt(id)).get() as Equipo;
+      if (!equipo || equipo.length) {
         context.response.status = 404;
         context.response.body = {
           msg: 'Equipo no encontrado',
@@ -36,7 +42,7 @@ export default class EquiposController {
     }
   }
   
-  static async delete(context: RouterContext<'/api/v1/equipos/:id', {id: string}, Record<string, void>>): Promise<void> {
+  static async delete(context: RouterContext<'/api/v1/equipos/:id'>): Promise<void> {
     try {
       const { id } = context.params;
       await Equipo.where('id_equipo', parseInt(id)).delete();
@@ -52,7 +58,7 @@ export default class EquiposController {
     }
   }
   
-  static async update(context: RouterContext<'/api/v1/equipos/:id', {id: string}, Record<string, void>>): Promise<void> {
+  static async update(context: RouterContext<'/api/v1/equipos/:id'>): Promise<void> {
     try {
       const { id } = context.params;
       const body: Equipo = await context.request.body().value;
@@ -74,7 +80,7 @@ export default class EquiposController {
     }
   }
 
-  static async add(context: RouterContext<'/api/v1/equipos', Record<string | number, string | undefined>, Record<string, void>>): Promise<void> {
+  static async add(context: RouterContext<'/api/v1/equipos'>): Promise<void> {
     try {
       const body = await context.request.body().value;
       const result: Equipo = await Equipo.create({
